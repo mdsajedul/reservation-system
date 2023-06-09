@@ -1,11 +1,15 @@
-require('dotenv').config()
 const http = require('http');
 const app = require('./app/app');
+const { PORT, dbURI } = require('./config/config');
+const connectDB = require('./db/db');
 
 const server = http.createServer(app);
 
-const PORT = process.env.PORT || 8000;
 
-server.listen(PORT,()=>{
-    console.log(`Server is running on PORT: ${PORT}`)
+connectDB(dbURI).then(()=>{
+    console.log('Database Connected');
+    server.listen(PORT,()=>{
+        console.log(`Server is running on PORT: ${PORT}`)
+    })
 })
+
