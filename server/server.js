@@ -11,5 +11,7 @@ connectDB(dbURI).then(()=>{
     server.listen(PORT,()=>{
         console.log(`Server is running on PORT: ${PORT}`)
     })
+}).catch((e)=>{
+    console.log(e);
 })
 
