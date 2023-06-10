@@ -25,6 +25,24 @@ async function getDistricts(){
     return districts;
 }
 
+async function getUpazilas(){
+    const upazilas = await readData('bd-upazilas.json')
+    return upazilas
+}
+
+async function getDistrictsByDivisionId (divisionId){
+    const allDistricts = await getDistricts();
+    const districts = allDistricts?.districts?.filter(district=>district.division_id===divisionId)
+    return districts
+}
+ 
+async function getUpazilasByDistrictId (districtId){
+    const allUpazilas =await getUpazilas()
+    console.log(allUpazilas);
+    let upazilas = allUpazilas?.upazilas?.filter((upazila)=> upazila?.district_id===districtId)
+    return upazilas
+}
+
 module.exports = {
-    getDivisions,getDistricts
+    getDivisions, getDistricts, getUpazilas, getUpazilasByDistrictId, getDistrictsByDivisionId
 }
