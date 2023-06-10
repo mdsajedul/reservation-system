@@ -29,7 +29,6 @@ const getAllDistricts = async (req,res,next)=>{
             }
             return res.status(200).json(districts)
         }
-
     } catch (error) {
         next(error)
     }
@@ -37,7 +36,6 @@ const getAllDistricts = async (req,res,next)=>{
 
 const getAllUpazila = async (req,res,next)=>{
     const {district_id} = req.query
-    console.log(district_id);
     try {
         if(!district_id){
             const upazilas = await getUpazilas()
