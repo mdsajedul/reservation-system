@@ -6,11 +6,10 @@ const jwt = require('jsonwebtoken')
 
 const registerService = async({username, email, password, roles})=>{
     let user = await findUserByProperties('email', email)
+   
     if(user) throw error('User already exist!',400)
-
-    const salt = await bcrypt.genSalt(bcryptSalt);
+    const salt =await bcrypt.genSalt(parseInt(bcryptSalt));
     const hash = await bcrypt.hash(password, salt);
-
     return createNewUser({username, email, password: hash, roles})
 }
 

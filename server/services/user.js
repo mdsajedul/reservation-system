@@ -9,16 +9,18 @@ const findUserByProperties =(key,value)=>{
     if(key==='_id'){
         return User.findById(value).exec()
     }
-    return User.find({[key]: value}).exec()
+    return User.findOne({[key]: value}).exec()
 }
 
 const createNewUser = ({username,email,password,roles})=>{
+    console.log(username,email,password,roles);
     const user = new User({
         username,
         email,
         password,
         roles: roles? roles : ['User']
     })
+    
     return user.save()
 }
 
