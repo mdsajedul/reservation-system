@@ -34,6 +34,8 @@ const hotelSchema = new Schema({
     checkInTime: {type: String, required: true},
     checkOutTime: {type: String, required: true},
 
+    
+
     policies: [{
         name: {type: String, required: true},
         description: {type: String, required: true}
