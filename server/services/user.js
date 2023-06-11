@@ -6,6 +6,7 @@ const findUser =()=>{
 }
 
 const findUserByProperties =(key,value)=>{
+    console.log(value);
     if(key==='_id'){
         return User.findById(value).exec()
     }
