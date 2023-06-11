@@ -34,10 +34,11 @@ const patchHotelById = (req,res,next)=>{
     }
 }
 const postHotel =async (req,res,next)=>{
-    const {agentId, hotelName, city, state, country, address, overview, features, facilities, roomType, phone, email, website, checkInTime, checkOutTime, policies, availability, images} = req.body
-    
+    const {agentId, hotelName, city, state, country, address, overview, features, facilities, roomType, phone, email, website, checkInTime, checkOutTime, policies, availability} = req.body
+
     try {
-        const hotel = await createHotel({agentId, hotelName, city, state, country, address, overview, features, facilities, roomType, phone, email, website, checkInTime, checkOutTime, policies, availability, images})
+        const images = req.files;
+        const hotel = await createHotel({agentId, hotelName, city, state, country, address, overview, features, facilities, roomType, phone, email, website, checkInTime, checkOutTime, policies, availability, images })
         if(!hotel){
             throw error('Hotel not created!',400)
         }

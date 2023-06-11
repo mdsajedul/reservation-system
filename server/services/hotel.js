@@ -17,6 +17,11 @@ const createHotel =async ({agentId, hotelName, city, state, country, address, ov
     if(alreadyCreated){
         throw error('Agent already created hotel',400)
     }
+
+    const fileNames = images.map(file=>{
+        return file.filename
+    })
+
     const hotel = new Hotel({
         agentId,
         hotelName,
@@ -41,7 +46,7 @@ const createHotel =async ({agentId, hotelName, city, state, country, address, ov
         checkOutTime,
         policies : JSON.parse(policies),
         availability,
-        images,
+        images: fileNames
     })
     return hotel.save()
 }
