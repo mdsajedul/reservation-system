@@ -67,7 +67,7 @@ const updateHotel = (id,{agentId, hotelName, city, state, country, address, over
         availability,
         images
     }
-    const hotel = new Hotel.updateOne({_id:id},{$set: updatedFields})
+    const hotel = new Hotel.updateOne({_id:id},{$set: updatedFields},{new:true})
     return hotel
 }
 

@@ -1,13 +1,31 @@
-const { findHotel, createHotel } = require("../services/hotel")
+const { findHotel, createHotel, findHotelByProperties } = require("../services/hotel")
 const error = require("../utils/error")
 
-const getHotelById = (req,res,next)=>{
+const getHotelById = async(req,res,next)=>{
+    const {hotelId} = req.params
     try {
-        
+        const hotel = await findHotelByProperties('_id',hotelId)
+        if(!hotelId){
+            throw error('Hotel not found!',404)
+        }
+        return res.status(200).json(hotel)
     } catch (error) {
         next(error)
     }
 }
+
+const HotelByAgentId = async(req,res,next)=>{
+    try {
+        const hotel = await findHotelByProperties('agentId',req.user._id)
+        if(!hotel){
+            throw error('Hotel not found!',404)
+        }
+        return res.status(200).json(hotel)
+    } catch (error) {
+        next(error)
+    }
+}
+
 const patchHotelById = (req,res,next)=>{
     try {
         
@@ -28,7 +46,7 @@ const postHotel =async (req,res,next)=>{
         next(error)
     }
 }
-const getAllHotel = async(req,res,next)=>{
+const getAllHotel = async(_req,res,next)=>{
     try {
         const hotels = await findHotel();
         if(hotels.length<=0){
@@ -41,5 +59,5 @@ const getAllHotel = async(req,res,next)=>{
 }
 
 module.exports = {
-    getHotelById, patchHotelById, postHotel,getAllHotel
+    getHotelById, patchHotelById, postHotel,getAllHotel,HotelByAgentId
 }
