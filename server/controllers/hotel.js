@@ -5,7 +5,7 @@ const getHotelById = async(req,res,next)=>{
     const {hotelId} = req.params
     try {
         const hotel = await findHotelByProperties('_id',hotelId)
-        if(!hotelId){
+        if(!hotel){
             throw error('Hotel not found!',404)
         }
         return res.status(200).json(hotel)
@@ -33,6 +33,7 @@ const patchHotelById = (req,res,next)=>{
         next(error)
     }
 }
+
 const postHotel =async (req,res,next)=>{
     const {agentId, hotelName, city, state, country, address, overview, features, facilities, roomType, phone, email, website, checkInTime, checkOutTime, policies, availability} = req.body
 
@@ -47,6 +48,7 @@ const postHotel =async (req,res,next)=>{
         next(error)
     }
 }
+
 const getAllHotel = async(_req,res,next)=>{
     try {
         const hotels = await findHotel();

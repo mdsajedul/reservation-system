@@ -12,7 +12,7 @@ const roomSchema = new Schema({
     availability: {
         type: String,
         default: 'Vacant',
-        enum:['Vacant','Occupied, Under maintenance']
+        enum:['Vacant','Occupied', 'Under maintenance']
     },
     description: {
         overview: {type: String, required: true},
@@ -22,11 +22,10 @@ const roomSchema = new Schema({
     images:[{
         type: String
     }],
-    floor: {type: Number, required},
+    floor: {type: Number, required: true},
     smokingPolicy:{
-        type: String,
-        default:'smoking',
-        enum:['Smoking,Non-smoking']
+        type: Boolean,
+        default: false,
     },
     bedType: {
         type: String,
