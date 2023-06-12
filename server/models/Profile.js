@@ -1,4 +1,4 @@
-const { Schema, default: mongoose } = require("mongoose");
+const { Schema, default: mongoose, model } = require("mongoose");
 
 const profileSchema = new Schema({
     userId: {type: mongoose.Schema.Types.ObjectId, ref:'User',required: true},
@@ -10,7 +10,14 @@ const profileSchema = new Schema({
         type: Date
     },
     contactInfo:{
-        phone:{type: String}
+        phone:{type: String},
+        email:{type: String}
+    },
+    location:{
+        country:{type: String},
+        state: {type: String},
+        district: {type: String},
+        upazila: {type: String}
     },
     biography:{
         type: String
@@ -25,25 +32,10 @@ const profileSchema = new Schema({
             link : {type: String}
         }
     ],
-    bookingHistory: [
-        {
-            type: Object
-        }
-    ],
-    reviewsAndRatings: [
-        {
-            hotelId: {type: mongoose.Schema.Types.ObjectId, ref:'Hotel'},
-            rating: {type: Number},
-            review: {type: String}
-        }
-    ],
-    // paymentInformation: [
-    //     {
-    //         method:{type: String},
-    //         price: {type: Number}
-            
-    //     }
-    // ],
-    
-
+    profileImage:{
+        type: String
+    }
 })
+
+const Profile = model('Profile',profileSchema)
+module.exports = Profile
