@@ -69,7 +69,7 @@ const updateHotel = (id,{agentId, hotelName, city, state, country, address, over
         checkInTime,
         checkOutTime,
         policies: JSON.parse(policies),
-        availability,
+        availability, 
         images
     }
     const hotel = new Hotel.updateOne({_id:id},{$set: updatedFields},{new:true})
