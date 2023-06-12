@@ -6,6 +6,7 @@ const findHotel =()=>{
 }
 
 const findHotelByProperties = (key,value)=>{
+
     if(key==='_id'){
         return Hotel.findById(value)
     }
@@ -13,6 +14,7 @@ const findHotelByProperties = (key,value)=>{
 }
 
 const createHotel =async ({agentId, hotelName, city, state, country, address, overview, features, facilities, roomType, phone, email, website, checkInTime, checkOutTime, policies, availability, images })=>{
+
     const alreadyCreated = await findHotelByProperties('agentId', agentId);
     if(alreadyCreated){
         throw error('Agent already created hotel',400)

@@ -16,7 +16,7 @@ const getHotelById = async(req,res,next)=>{
 
 const HotelByAgentId = async(req,res,next)=>{
     try {
-        const hotel = await findHotelByProperties('agentId',req.user._id)
+        const hotel = await findHotelByProperties('agentId', req.params.agentId)
         if(!hotel){
             throw error('Hotel not found!',404)
         }
@@ -38,7 +38,7 @@ const postHotel =async (req,res,next)=>{
 
     try {
         const images = req.files;
-        const hotel = await createHotel({agentId, hotelName, city, state, country, address, overview, features, facilities, roomType, phone, email, website, checkInTime, checkOutTime, policies, availability, images })
+        const hotel = await createHotel({agentId: agentId? agentId : req.user._id, hotelName, city, state, country, address, overview, features, facilities, roomType, phone, email, website, checkInTime, checkOutTime, policies, availability, images })
         if(!hotel){
             throw error('Hotel not created!',400)
         }
