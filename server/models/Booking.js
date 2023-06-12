@@ -1,23 +1,14 @@
-const { Schema, model } = require("mongoose");
-
+const { Schema, model, default: mongoose } = require("mongoose");
 
 const bookingSchema = new Schema({
-  user: {
+  userId: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'User',
     required: true,
   },
-  room: {
+  roomId: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Room',
-    required: true,
-  },
-  checkInDate: {
-    type: Date,
-    required: true,
-  },
-  checkOutDate: {
-    type: Date,
     required: true,
   },
   guests: {
@@ -32,21 +23,19 @@ const bookingSchema = new Schema({
     type: String,
     enum: ['Pending', 'Paid'],
     default: 'Pending',
+    required: true
   },
   bookingStatus: {
     type: String,
-    enum: ['Confirmed', 'Cancelled'],
-    default: 'Confirmed',
+    enum: ['Confirmed', 'Cancelled','Pending'],
+    default: 'Pending',
+    required: true
   },
-  createdAt: {
-    type: Date,
-    default: Date.now,
-  },
-  updatedAt: {
-    type: Date,
-    default: Date.now,
-  },
-});
+  paymentMethod: {
+    type: String,
+    required: true
+  }
+},{timestamps:true});
 
 const Booking = model('Booking',bookingSchema)
 module.exports = Booking
