@@ -39,7 +39,7 @@ const createProfile =async ({userId, firstName, lastName, dateOfBirth, phone, em
             notification,
             language
         },
-        // socialMediaLink : JSON.parse(socialMediaLink),
+        socialMediaLink : JSON.parse(socialMediaLink),
         profileImage
     })
 

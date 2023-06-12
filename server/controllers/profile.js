@@ -1,4 +1,4 @@
-const { createProfile } = require("../services/profile");
+const { createProfile, findProfileByProperties } = require("../services/profile");
 const error = require("../utils/error");
 
 const postProfile =async (req,res,next)=>{
@@ -18,6 +18,20 @@ const postProfile =async (req,res,next)=>{
         next(error)
     }
 }
+
+const getProfileByUserId = async (req,res,next)=>{
+    const userId = req.params.userId? req.params.userId : req.user._id
+    try {
+        const profile = await findProfileByProperties('userId', userId)
+        if(!profile){
+            throw error('Profile not created yet!', 404)
+        }
+        return res.status(200).json(profile)
+    } catch (error) {
+        next(error)
+    }
+}
+
 const patchProfile = (req,res,next)=>{
     try {
         
@@ -37,5 +51,5 @@ const deleteProfile = (req,res,next)=>{
 }
 
 module.exports = {
-    postProfile, patchProfile, deleteProfile
+    postProfile, patchProfile, deleteProfile, getProfileByUserId
 }

@@ -28,7 +28,7 @@ const roomSchema = new Schema({
         default:'smoking',
         enum:['Smoking,Non-smoking']
     },
-    debType: {
+    bedType: {
         type: String,
         default: 'Single',
         enum:['Single', 'Double', 'Queen', 'King']
