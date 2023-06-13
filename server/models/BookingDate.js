@@ -1,10 +1,6 @@
 const { Schema, default: mongoose, model } = require("mongoose");
 
 const bookingDateSchema = new Schema({
-    monthNo:[{
-        type: Number,
-        required: true
-    }],
     roomId: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Room',
@@ -15,16 +11,12 @@ const bookingDateSchema = new Schema({
         ref: 'Booking',
         required: true
     },
-    year: [{
-        type: Number,
-        required: true,
-    }],
-    days:[
-        {
-            type: Number,
-            required: true
-        }
-    ]
+    startDate:{
+        type: Date
+    },
+    endDate:{
+        type: Date
+    }
 })
 
 const BookingDate = model('BookingDate',bookingDateSchema)

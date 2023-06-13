@@ -1,48 +1,45 @@
 const Booking = require("../models/Booking");
-const BookingDate = require("../models/BookingDate");
-const error = require("../utils/error")
+const compareDateArrays = require("../utils/compareDatesArray");
+const datesFromStartEndDates = require("../utils/datesFromStartEndDates");
+const error = require("../utils/error");
+const { findBookingDatesByProperties, saveBookingDates } = require("./bookingDates");
 const { findRoombyProperties } = require("./room")
 
 
 
-const saveBookingDates = ({month,year,days,bookingId,roomId})=>{
-    const bookingDates = BookingDate({
-        bookingId,
-        roomId,
-        monthNo: month,
-        year,
-        days
-    })
-    return bookingDates.save()
-}
+const getBookedDates = async (roomId)=>{
 
-const parseValuesFromDates = (data)=>{
-    const day = [];
-    const month = [];
-    const year = [];
-
-    data.forEach((date)=>{
-        const [yearValue,monthValue,dayValue] = date.split('/');
-        year.push(parseInt(yearValue));
-        month.push(parseInt(monthValue));
-        day.push(parseInt(dayValue))
-    })
-
-    return {
-        days: [...new Set(day)],
-        month: [...new Set(month)],
-        year: [...new Set(year)]
+    const bookings = await findBookingDatesByProperties('roomId',roomId);
+    if(bookings.length<=0){
+        return []
     }
+
+    const allBookedDates = bookings.reduce((dates,booking)=>{
+        const bookedDates = datesFromStartEndDates(booking.startDate,booking.endDate);
+        return [...dates,...bookedDates];
+    },[]);
+
+    return allBookedDates
 }
 
-const submitBooking = async({userId,roomId,guests,totalPrice,paymentStatus,paymentMethod,bookingStatus,dates})=>{
+
+
+const submitBooking = async({userId,roomId,guests,totalPrice,paymentStatus,paymentMethod,bookingStatus,checkInDate,checkOutDate})=>{
     const room = await findRoombyProperties('_id',roomId)
     if(!room){
         throw error('Your selected room not found!',404);
     }
 
-    const {days,month,year} = parseValuesFromDates(dates)
-    console.log(days, month, year);
+    const wsihedBookDates = datesFromStartEndDates(checkInDate,checkOutDate);
+    const allBookedDates =await getBookedDates(roomId)
+    console.log('wished Dates',wsihedBookDates);
+    console.log('all booked dates',allBookedDates);
+
+    const isTrue = compareDateArrays(wsihedBookDates,allBookedDates)
+    if(!isTrue){
+        throw error('Please select diffrent dates',400)
+    }
+    console.log('Is true value:',isTrue);
 
     const booking = Booking({
         userId,
@@ -53,14 +50,14 @@ const submitBooking = async({userId,roomId,guests,totalPrice,paymentStatus,payme
         paymentStatus,
         bookingStatus
     })
+    console.log(booking);
 
-    const bookingDays = await saveBookingDates({days,month,year,roomId,bookingId:booking?._id})
-
+    const bookingDays = await saveBookingDates({bookingId:booking._id,roomId,startDate:checkInDate,endDate:checkOutDate})
+    console.log(bookingDays);
     if(!bookingDays){
         throw error('Booking dates not saved',400)
     }
     return booking.save()
-
 }
 
 module.exports = {
