@@ -32,14 +32,11 @@ const submitBooking = async({userId,roomId,guests,totalPrice,paymentStatus,payme
 
     const wsihedBookDates = datesFromStartEndDates(checkInDate,checkOutDate);
     const allBookedDates =await getBookedDates(roomId)
-    console.log('wished Dates',wsihedBookDates);
-    console.log('all booked dates',allBookedDates);
 
     const isTrue = compareDateArrays(wsihedBookDates,allBookedDates)
     if(!isTrue){
         throw error('Please select diffrent dates',400)
     }
-    console.log('Is true value:',isTrue);
 
     const booking = Booking({
         userId,
@@ -50,8 +47,7 @@ const submitBooking = async({userId,roomId,guests,totalPrice,paymentStatus,payme
         paymentStatus,
         bookingStatus
     })
-    console.log(booking);
-
+    
     const bookingDays = await saveBookingDates({bookingId:booking._id,roomId,startDate:checkInDate,endDate:checkOutDate})
     console.log(bookingDays);
     if(!bookingDays){
