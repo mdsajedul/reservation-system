@@ -4,20 +4,28 @@ const roomController = require('../controllers/room')
 const authenticate = require('../middlewares/authenticate');
 const upload = require('../middlewares/fileuploader');
 const roleAuthorization = require('../middlewares/roleAuthorization');
+const { validate, validationSchema } = require('../middlewares/validate');
 
 
-router.get('/agent/:agentId', hotelController.HotelByAgentId)
+//get hotel by agentId
+router.get('/agent/:agentId', validate(validationSchema.objectIdValidation,'params'), hotelController.HotelByAgentId)
 
-router.get('/:hotelId/rooms', roomController.getRoomsByHotelId)
+//get rooms by hoteId
+router.get('/:hotelId/rooms', validate(validationSchema.objectIdValidation,'params'), roomController.getRoomsByHotelId)
 
-router.post('/:hotelId/rooms',authenticate, roleAuthorization(['Agent']),upload.array('images'), roomController.postRoom)
+//create room by hotel id
+router.post('/:hotelId/rooms',authenticate, roleAuthorization(['Agent']),upload.array('images'), validate(validationSchema.objectIdValidation,'params'), validate(validationSchema.createRoom,'body'), roomController.postRoom)
 
-router.get('/:hotelId', hotelController.getHotelById)
+//get hotel by hoteId
+router.get('/:hotelId', validate(validationSchema.objectIdValidation,'params'), hotelController.getHotelById)
 
-router.patch('/:hotelId', authenticate, roleAuthorization(['Admin','Agent']), hotelController.patchHotelById)
+//update hotel by hotelId
+router.patch('/:hotelId', authenticate, validate(validationSchema.objectIdValidation), roleAuthorization(['Admin','Agent']), hotelController.patchHotelById)
 
-router.post('/', authenticate, roleAuthorization(['Admin','Agent']), upload.array('images'), hotelController.postHotel)
+//create new hotel
+router.post('/', authenticate, roleAuthorization(['Admin','Agent']), upload.array('images'), validate(validationSchema.createHotel,'body'), hotelController.postHotel)
 
+//get all hotels
 router.get('/', hotelController.getAllHotel)
 
 
