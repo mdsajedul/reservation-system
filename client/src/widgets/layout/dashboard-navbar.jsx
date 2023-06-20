@@ -25,12 +25,20 @@ import {
   setOpenConfigurator,
   setOpenSidenav,
 } from "@/context";
+import { useDispatch, useSelector } from "react-redux";
+import { userLoggedOut } from "@/features/auth/authSlice";
 
 export function DashboardNavbar() {
   const [controller, dispatch] = useMaterialTailwindController();
   const { fixedNavbar, openSidenav } = controller;
   const { pathname } = useLocation();
   const [layout, page] = pathname.split("/").filter((el) => el !== "");
+  const {user} = useSelector((state)=>state.auth)
+  const dispatchRedux = useDispatch()
+  
+  const handleSignOut =()=>{
+    dispatchRedux(userLoggedOut())
+  }
 
   return (
     <Navbar
@@ -83,7 +91,18 @@ export function DashboardNavbar() {
           >
             <Bars3Icon strokeWidth={3} className="h-6 w-6 text-blue-gray-500" />
           </IconButton>
-          <Link to="/auth/sign-in">
+          {user ?
+              <Button
+              onClick={handleSignOut}
+              variant="text"
+              color="red"
+              className="hidden items-center gap-1 px-4 xl:flex"
+              >
+              <UserCircleIcon className="h-5 w-5 text-red-500" />
+              Sign Out
+              </Button>
+            :
+            <Link to="/auth/sign-in">
             <Button
               variant="text"
               color="blue-gray"
@@ -100,6 +119,7 @@ export function DashboardNavbar() {
               <UserCircleIcon className="h-5 w-5 text-blue-gray-500" />
             </IconButton>
           </Link>
+        }
           <IconButton
             variant="text"
             color="blue-gray"

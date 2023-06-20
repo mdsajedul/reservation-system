@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import {
   Card,
   CardHeader,
@@ -11,8 +11,15 @@ import {
 } from "@material-tailwind/react";
 import { useState } from "react";
 import { useLoginMutation } from "@/features/auth/authApi";
+import { useSelector } from "react-redux";
 
 export function SignIn() {
+
+  const navigate = useNavigate()
+  const {user} = useSelector((state)=>state.auth)
+  if(user){
+    navigate('/dashboard/home')
+  }
 
   const [login] = useLoginMutation()
   const [data,setData]=useState({

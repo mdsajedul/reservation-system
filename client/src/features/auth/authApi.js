@@ -1,6 +1,7 @@
 // import { decodeJWT } from "@/utils/decodeJWT";
 import { api } from "../api/api";
 import jwt_decode from "jwt-decode"
+import { userLoggedIn } from "./authSlice";
 
 
 
@@ -23,8 +24,11 @@ export const authApi = api.injectEndpoints({
                             token:  token,
                             user: payload
                         }))
+                        dispatch(userLoggedIn({
+                            token: token,
+                            user: payload
+                        }))
                     }
-                    console.log(payload.roles);
                 }
                 catch(err){
                     console.log(err);
