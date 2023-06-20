@@ -37,6 +37,7 @@ export function DashboardNavbar() {
   const dispatchRedux = useDispatch()
   
   const handleSignOut =()=>{
+    localStorage.removeItem('auth')
     dispatchRedux(userLoggedOut())
   }
 
