@@ -21,12 +21,10 @@ const Button = ({children, variant, onClick, size})=>{
             return '2';
         }else if(size==='lg'){
             return '3'
-        }else {
-            return '2'
         }
     }
 
-    const buttonClasses = `py-${getSizeClasses(size)} px-4 rounded-lg  cursor-pointer ${getVariantClasses(
+    const buttonClasses = `py-2 px-4 rounded-lg  cursor-pointer ${getVariantClasses(
         variant
       )}`;
 

@@ -3,7 +3,7 @@
 @tailwind utilities;
 
 :root {
-  --foreground-rgb: 0,0,0;
+  --foreground-rgb: 0, 0, 0;
   --background-rgb: 255, 255, 255;
 }
 
@@ -18,6 +18,13 @@
 body {
   color: var(--foreground-rgb);
   background-color: var(--background-rgb);
-  padding-left: 60px;
-  padding-right: 60px;
+  padding-left: 80px;
+  padding-right: 80px;
+}
+
+@media (max-width: 640px) {
+  body {
+    padding-left: 20px;
+    padding-right: 20px;
+  }
 }
