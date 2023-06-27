@@ -4,7 +4,7 @@ import Button from '../buttons/Button';
 export default function Navigation() {
   return (
     <section>
-      <div className="flex flex-col sm:flex-row py-10">
+      <div className="flex flex-col sm:flex-row py-6 border-b-2">
         <div className="basis-1/6 flex items-center justify-center sm:justify-start mb-4 sm:mb-0">
           <h1 className="text-xl font-semibold">Tripster</h1>
         </div>
