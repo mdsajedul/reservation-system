@@ -33,6 +33,8 @@ const Button = ({children, variant, onClick, size})=>{
             {children}
         </button>
     )
+
+  
 }
 
 export default Button;

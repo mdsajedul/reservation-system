@@ -27,7 +27,16 @@ export default function Hotels() {
                 </div>
             </div>
 
-            <div>
+            <div className='py-2'>
+                <HorizontalHotelCard/>
+            </div>
+            <div className='py-2'>
+                <HorizontalHotelCard/>
+            </div>
+            <div className='py-2'>
+                <HorizontalHotelCard/>
+            </div>
+            <div className='py-2'>
                 <HorizontalHotelCard/>
             </div>
         </div>
