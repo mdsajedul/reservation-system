@@ -3,14 +3,14 @@ const error = require("../utils/error");
 const { findHotelByProperties } = require("./hotel");
 
 const findRoom =()=>{
-    return Room.find();
+    return Room.find().lean();
 }
 
 const findRoombyProperties =(key,value)=>{
     if(key==='_id'){
-        return Room.findById(value)
+        return Room.findById(value).lean()
     }
-    return Room.find({[key]:value})
+    return Room.find({[key]:value}).lean()
 }
 
 const createRoom = async({hotelId,roomNumber,roomType,price,availability,overview,features,facilities,images,floor,smokingPolicy,bedType,occupancy})=>{

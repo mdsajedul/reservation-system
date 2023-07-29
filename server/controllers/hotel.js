@@ -1,8 +1,10 @@
+const { serverUrl } = require("../config/config");
 const { findHotel, createHotel, findHotelByProperties } = require("../services/hotel")
 const error = require("../utils/error")
 
 const getHotelById = async(req,res,next)=>{
     const {hotelId} = req.params
+    
     try {
         const hotel = await findHotelByProperties('_id',hotelId)
         if(!hotel){
@@ -10,7 +12,7 @@ const getHotelById = async(req,res,next)=>{
         }
         const modifiedHotel = {
             ...hotel,
-            images: hotel.images.map((image)=>`uploads/${image}`)
+            images: hotel.images.map((image)=>`${serverUrl}/uploads/${image}`)
         }
         return res.status(200).json(modifiedHotel)
     } catch (error) {
@@ -59,7 +61,7 @@ const getAllHotel = async (_req, res, next) => {
   
       const modifiedHotels = hotels.map((hotel) => ({
         ...hotel,
-        images: hotel.images.map((image) => `uploads/${image}`),
+        images: hotel.images.map((image) => `${serverUrl}/uploads/${image}`),
       }));
   
       if (modifiedHotels.length <= 0) {

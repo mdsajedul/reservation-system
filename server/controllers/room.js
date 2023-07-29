@@ -1,3 +1,4 @@
+const { serverUrl } = require("../config/config");
 const { createRoom, findRoombyProperties } = require("../services/room");
 const error = require("../utils/error");
 
@@ -24,7 +25,11 @@ const getRoomsByHotelId = async(req,res,next)=>{
         if(rooms.length<=0){
             throw error('No room found!',400)
         }
-        return res.status(200).json(rooms)
+        const modifiedRooms = rooms.map((room)=>({
+            ...room,
+            images: room.images.map((image)=>`${serverUrl}/uploads/${image}`)
+        }))
+        return res.status(200).json(modifiedRooms)
     } catch (error) {
         next(error)
     }

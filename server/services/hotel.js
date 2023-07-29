@@ -26,7 +26,7 @@ const createHotel =async ({agentId, hotelName, city, state, country, address, ov
 
     const hotel = new Hotel({
         agentId,
-        hotelName,
+        hotelName, 
         location: {
             city,
             state,
