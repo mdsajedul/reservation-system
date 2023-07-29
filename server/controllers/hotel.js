@@ -8,7 +8,11 @@ const getHotelById = async(req,res,next)=>{
         if(!hotel){
             throw error('Hotel not found!',404)
         }
-        return res.status(200).json(hotel)
+        const modifiedHotel = {
+            ...hotel,
+            images: hotel.images.map((image)=>`uploads/${image}`)
+        }
+        return res.status(200).json(modifiedHotel)
     } catch (error) {
         next(error)
     }
@@ -49,17 +53,25 @@ const postHotel =async (req,res,next)=>{
     }
 }
 
-const getAllHotel = async(_req,res,next)=>{
+const getAllHotel = async (_req, res, next) => {
     try {
-        const hotels = await findHotel();
-        if(hotels.length<=0){
-            throw error('No hotel found!',404);
-        }
-        return res.status(200).json(hotels)
+      const hotels = await findHotel();
+  
+      const modifiedHotels = hotels.map((hotel) => ({
+        ...hotel,
+        images: hotel.images.map((image) => `uploads/${image}`),
+      }));
+  
+      if (modifiedHotels.length <= 0) {
+        throw new Error('No hotels found!');
+      }
+  
+      return res.status(200).json(modifiedHotels);
     } catch (error) {
-        next(error)
+      next(error);
     }
-}
+  };
+  
 
 module.exports = {
     getHotelById, patchHotelById, postHotel,getAllHotel,HotelByAgentId

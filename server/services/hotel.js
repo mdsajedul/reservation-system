@@ -2,15 +2,15 @@ const Hotel = require("../models/Hotel")
 const error = require("../utils/error")
 
 const findHotel =()=>{
-    return Hotel.find()
+    return Hotel.find().lean()
 }
 
 const findHotelByProperties = (key,value)=>{
 
     if(key==='_id'){
-        return Hotel.findById(value)
+        return Hotel.findById(value).lean()
     }
-    return Hotel.findOne({[key]:value})
+    return Hotel.findOne({[key]:value}).lean()
 }
 
 const createHotel =async ({agentId, hotelName, city, state, country, address, overview, features, facilities, roomType, phone, email, website, checkInTime, checkOutTime, policies, availability, images })=>{
