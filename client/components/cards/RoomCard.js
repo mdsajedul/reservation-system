@@ -1,9 +1,10 @@
 import React from 'react'
 import Button from '../buttons/Button'
+import Link from 'next/link'
 
-export default function RoomCard({room}) {
+export default function RoomCard({room,hotelId}) {
   return (
-    <div className='bg-white box-shadow p-2 rounded-2xl relative'>
+    <Link href={`/hotels/${hotelId}/checkout?room=${room?._id}`} className='bg-white box-shadow p-2 rounded-2xl relative'>
         <div className='rounded-2xl overflow-hidden'>
             <img src={room?.images[0]} alt="" />
         </div>
@@ -37,6 +38,6 @@ export default function RoomCard({room}) {
         <div>
             <button className='bg-blue-600 text-white w-full rounded-md px-2 py-1 shadow-md' >Book now for $200</button>
         </div>
-    </div>
+    </Link>
   )
 }

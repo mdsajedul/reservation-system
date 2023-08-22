@@ -20,7 +20,7 @@ export default function HotelDetails() {
         roomCardContent = <div>No room found!</div>
     }else if(!roomIsLoading && !roomIsError && rooms.length > 0){
         roomCardContent = rooms?.map((room,index)=>(
-            <RoomCard room={room} key={index}/>
+            <RoomCard room={room} hotelId={hotelId} key={index}/>
         ))
     }
 
