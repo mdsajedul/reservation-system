@@ -1,11 +1,11 @@
-const { serverUrl } = require("../config/config");
+const { findHotelByProperties } = require("../services/hotel");
 const { createRoom, findRoombyProperties } = require("../services/room");
+const addImageUrl = require("../utils/addImageUrl");
 const error = require("../utils/error");
 
 const postRoom =async (req,res,next)=>{
     const {roomNumber,roomType,price,availability,overview,features,facilities,floor,smokingPolicy,bedType,occupancy} = req.body
     const {hotelId} = req.params;
-    console.log(hotelId);
     try {
         const images = req.files;
         const room = await createRoom({hotelId,roomNumber,roomType,price,availability,overview,features,facilities,floor,smokingPolicy,bedType,occupancy,images})
@@ -25,10 +25,7 @@ const getRoomsByHotelId = async(req,res,next)=>{
         if(rooms.length<=0){
             throw error('No room found!',400)
         }
-        const modifiedRooms = rooms.map((room)=>({
-            ...room,
-            images: room.images.map((image)=>`${serverUrl}/uploads/${image}`)
-        }))
+        const modifiedRooms = rooms.map((room)=>(addImageUrl(room)))
         return res.status(200).json(modifiedRooms)
     } catch (error) {
         next(error)
@@ -42,7 +39,20 @@ const getRoomById = async (req,res,next)=>{
         if(!room){
             throw error('Room not found!',400)
         }
-        return res.status(200).json(room)
+        const modifiedRoom= addImageUrl(room)
+        const hotel = await findHotelByProperties('_id',room?.hotelId)
+        if(!hotel){
+            throw error('No hotel found for this room')
+        }
+        const modifiedHotel=addImageUrl(hotel)
+        return res.status(200).json({
+            room:{
+                ...modifiedRoom
+            },
+            hotel:{
+                ...modifiedHotel
+            }
+        })
     } catch (error) {
         next(error)
     }
