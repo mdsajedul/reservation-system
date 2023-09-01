@@ -26,6 +26,9 @@ body {
   padding-right: 7%;
 }
 
+.react-datepicker-wrapper{
+  width: 100%;
+}
 @media (max-width: 640px) {
   body {
     padding-left: 20px;
