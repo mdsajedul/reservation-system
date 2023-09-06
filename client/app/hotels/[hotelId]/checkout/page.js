@@ -12,6 +12,9 @@ import InputField from '@/components/inputs/InputField'
 import DatePicker from "react-datepicker";
 import {format,addDays,differenceInDays } from 'date-fns'
 import "react-datepicker/dist/react-datepicker.css";
+import { usePostBookingMutation } from '@/lib/redux/features/booking/bookingApi'
+<link rel="preload" href="react-datepicker/dist/react-datepicker.css"as='css'/> 
+
 
 
 export default function Checkout() {
@@ -20,11 +23,33 @@ export default function Checkout() {
   const { register,  handleSubmit, watch, formState: { errors } } = useForm();
   const [startDate, setStartDate] = useState(new Date());
   const [endDate, setEndDate] = useState(new Date(addDays(startDate,3)));
+  const [bookingApi] = usePostBookingMutation()
 
-  console.log(startDate,endDate);
+  // console.log(startDate,endDate);
 
   
   const {data,isLoading,isError,error} = useGetRoomByIdQuery(roomId);
+
+  const onSubmit =(data)=>{
+    console.log(data);
+    bookingApi({
+      userId:'',
+      roomId:'',
+      guests:'',
+      totalPrice:'',
+      paymentStatus:'',
+      BookingStatus:'',
+      paymentMethod:'',
+      checkInDate:'',
+      checkOutDate:''
+    })
+    .unwrap()
+    .then((response)=>{
+      console.log('res',response);
+    }).catch((error)=>{
+      console.log('err',error)
+    })
+  }
   
   let roomDetailsContent;
   if(isLoading){
@@ -34,7 +59,7 @@ export default function Checkout() {
   }else if(data){
     roomDetailsContent = (
       <div className='py-5'>
-        <div className='md:grid md:grid-cols-3 sm:grid-cols-1'>
+        <form onSubmit={handleSubmit(onSubmit)} className='md:grid md:grid-cols-3 sm:grid-cols-1'>
           <div className='col-span-2 p-3'>
             <div className='border rounded p-2 shadow md:flex gap-3'>
               <div className='flex items-center'>
@@ -93,7 +118,7 @@ export default function Checkout() {
             <div className='pt-8'>
               <h2>Enter your details</h2>
               <div>
-                <form action="">
+                <div >
                   <div className="grid md:grid-cols-2 grid-cols-1 gap-3">
                       <div>
                         <InputField 
@@ -130,7 +155,7 @@ export default function Checkout() {
                               id={'phone'}
                               type={'number'}
                               placeholder={'Your phone'}
-                              name={'name'}
+                              name={'phone'}
                               register={register}
                               required="Phone number is required"
                               minLength={11}
@@ -174,7 +199,7 @@ export default function Checkout() {
                       />
                       </div>
                   </div>
-                </form>
+                </div>
               </div>
             </div>
           </div>
@@ -198,13 +223,13 @@ export default function Checkout() {
                 <div className='p-2'>
                   <p className='text-gray-500 text-xs'>TOTAL LENGTH OF STAY</p>
                   <div className='flex items-center'>
-                    <span className='text-gray-500 text-xs pe-2'>{differenceInDays(endDate,startDate)} days </span> <BsCalendarEvent color='gray' fontSize={'14px'}/>
+                    <span className='text-gray-500 text-xs pe-2'>{differenceInDays(endDate,startDate)+1} days </span> <BsCalendarEvent color='gray' fontSize={'14px'}/>
                   </div>
                 </div>
               </div>
               <div>
                 <h2 className='pb-3 pt-4 text-sm'>Your price summary</h2>
-                <table class="table-auto w-full">
+                <table className="table-auto w-full">
                     <tbody className='w-full ps-5'>
                       <tr className='text-xs'>
                         <td>Room</td>
@@ -214,10 +239,10 @@ export default function Checkout() {
                         <td>VAT (8%)</td>
                         <td>1200</td>
                       </tr>
-                      <div className='py-1'
+                      <tr className='py-1'
                       >
 
-                      </div>
+                      </tr>
                       <tr className='text-sm font-semibold pt-2'>
                         <td>Total</td>
                         <td>3800</td>
@@ -226,11 +251,15 @@ export default function Checkout() {
                 </table>
               </div>
               <div className='py-3'>
-                <button className='w-full bg-blue-600 text-white px-2 py-2 rounded-md text-sm'>Request To Book</button>
+                <input className='w-full bg-blue-600 text-white px-2 py-2 rounded-md text-sm cursor-pointer'
+                  value={'Request To Book'}
+                  type='submit'
+
+                />
               </div>
             </div>
           </div>
-        </div>
+        </form>
       </div>
     )
   }
