@@ -15,6 +15,7 @@ const hotelApi = apiSlice.injectEndpoints({
                     dispatch(storeAllHotel(result.data))
                 } catch (error) {
                     dispatch(setError(error))
+                    throw error;
                 }
             }
         }),

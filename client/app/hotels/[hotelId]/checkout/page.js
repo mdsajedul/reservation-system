@@ -13,6 +13,7 @@ import DatePicker from "react-datepicker";
 import {format,addDays,differenceInDays } from 'date-fns'
 import "react-datepicker/dist/react-datepicker.css";
 import { usePostBookingMutation } from '@/lib/redux/features/booking/bookingApi'
+import { handleNetworkError } from '@/utils/handleNetworkError'
 <link rel="preload" href="react-datepicker/dist/react-datepicker.css"as='css'/> 
 
 
@@ -29,6 +30,7 @@ export default function Checkout() {
 
   
   const {data,isLoading,isError,error} = useGetRoomByIdQuery(roomId);
+  // console.log(error);
 
   const onSubmit =(data)=>{
     console.log(data);
@@ -47,7 +49,8 @@ export default function Checkout() {
     .then((response)=>{
       console.log('res',response);
     }).catch((error)=>{
-      console.log('err',error)
+      handleNetworkError(error)
+      // console.log('err',error)
     })
   }
   
@@ -55,7 +58,7 @@ export default function Checkout() {
   if(isLoading){
     roomDetailsContent = <div>Loading</div>
   }else if(isError){
-    roomDetailsContent = <div>{error}</div>
+    roomDetailsContent = <div>{handleNetworkError(error)}</div>
   }else if(data){
     roomDetailsContent = (
       <div className='py-5'>
