@@ -45,7 +45,7 @@ const getRoomById = async (req,res,next)=>{
             throw error('No hotel found for this room')
         }
         const modifiedHotel=addImageUrl(hotel)
-        return res.status(500).json({
+        return res.status(200).json({
             room:{
                 ...modifiedRoom
             },

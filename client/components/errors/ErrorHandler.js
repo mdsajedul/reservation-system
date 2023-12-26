@@ -3,11 +3,7 @@ import React from 'react'
 import { TbServerOff } from 'react-icons/tb';
 
 export default function ErrorHandler({error}) {
-   
-    // const router = useNavigation();
-    // console.log('err',error);
-
-
+    // console.log(error);
     let errorContent;
     if(error.status==="FETCH_ERROR"){
         errorContent = 
@@ -21,7 +17,7 @@ export default function ErrorHandler({error}) {
         
     }else if(error?.status===500){
         errorContent= 
-        <div className='h-screen flex justify-center items-center'>
+        <div className=' py-14 flex justify-center items-center'>
             <div>
                 <div className='flex justify-center'>
                     <div className='bg-red-100 rounded-full p-3'>
@@ -35,6 +31,8 @@ export default function ErrorHandler({error}) {
                 <p className='text-lg text-center font-semibold text-gray-700'>Oops something went wrong. Try to refresh this page </p> <p className='text-center text-lg font-semibold text-gray-700'> or feel free to contact us if the problem presists. </p>
             </div>
         </div>
+    }else if(error?.status===401){
+       console.log('401');
     }
   return (
     <div>

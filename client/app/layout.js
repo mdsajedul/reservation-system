@@ -5,7 +5,6 @@ import { Inter } from 'next/font/google'
 import Footer from '@/components/shared/Footer'
 import { Providers } from '@/lib/provider'
 import AuthChecker from './authChecker'
-import { ErrorBoundary } from 'react-error-boundary'
 import ErrorHandler from '@/components/errors/ErrorHandler'
 
 const inter = Inter({ subsets: ['latin'] })
@@ -23,13 +22,11 @@ export default function RootLayout({ children }) {
     
       <html lang="en">
         <body className={inter.className}>
-          <ErrorBoundary FallbackComponent={ErrorHandler}>
             <Providers>
                 <AuthChecker>
                   {children}
                 </AuthChecker>
             </Providers>
-          </ErrorBoundary>
         </body>
       </html>
    

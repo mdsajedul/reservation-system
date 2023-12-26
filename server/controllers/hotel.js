@@ -1,5 +1,6 @@
 const { serverUrl } = require("../config/config");
-const { findHotel, createHotel, findHotelByProperties } = require("../services/hotel")
+const { findHotel, createHotel, findHotelByProperties } = require("../services/hotel");
+const { findProfileByProperties } = require("../services/profile");
 const error = require("../utils/error")
 
 const getHotelById = async(req,res,next)=>{
@@ -7,11 +8,15 @@ const getHotelById = async(req,res,next)=>{
     
     try {
         const hotel = await findHotelByProperties('_id',hotelId)
+        console.log('user id/ agent id',hotel?.agentId)
+        let profile = await findProfileByProperties('userId',hotel?.agentId)
+        console.log(profile)
         if(!hotel){
             throw error('Hotel not found!',404)
         }
         const modifiedHotel = {
             ...hotel,
+            agentDetails: profile,
             images: hotel.images.map((image)=>`${serverUrl}/uploads/${image}`)
         }
         return res.status(200).json(modifiedHotel)

@@ -14,7 +14,9 @@ import {format,addDays,differenceInDays } from 'date-fns'
 import "react-datepicker/dist/react-datepicker.css";
 import { usePostBookingMutation } from '@/lib/redux/features/booking/bookingApi'
 import { handleNetworkError } from '@/utils/handleNetworkError'
+// import { handleNetworkError } from '@/utils/handleNetworkError'
 <link rel="preload" href="react-datepicker/dist/react-datepicker.css"as='css'/> 
+import { useRouter } from 'next/navigation'
 
 
 
@@ -25,12 +27,8 @@ export default function Checkout() {
   const [startDate, setStartDate] = useState(new Date());
   const [endDate, setEndDate] = useState(new Date(addDays(startDate,3)));
   const [bookingApi] = usePostBookingMutation()
-
-  // console.log(startDate,endDate);
-
-  
   const {data,isLoading,isError,error} = useGetRoomByIdQuery(roomId);
-  // console.log(error);
+  const router = useRouter()
 
   const onSubmit =(data)=>{
     console.log(data);
@@ -49,8 +47,7 @@ export default function Checkout() {
     .then((response)=>{
       console.log('res',response);
     }).catch((error)=>{
-      handleNetworkError(error)
-      // console.log('err',error)
+      handleNetworkError(error,router)
     })
   }
   
@@ -58,7 +55,7 @@ export default function Checkout() {
   if(isLoading){
     roomDetailsContent = <div>Loading</div>
   }else if(isError){
-    roomDetailsContent = <div>{handleNetworkError(error)}</div>
+    throw error
   }else if(data){
     roomDetailsContent = (
       <div className='py-5'>

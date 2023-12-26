@@ -1,5 +1,9 @@
+const Profile = require("../models/Profile");
+const User = require("../models/User");
+const { findProfileByProperties } = require("../services/profile");
 const { findUserByProperties, updateUser, createNewUser, findUser } = require("../services/user");
 const error = require("../utils/error");
+const { getProfileByUserId } = require("./profile");
 
 const getUserById =async (req,res,next)=>{
     const {userId} = req.params;
@@ -36,23 +40,38 @@ const postUser = async (req,res,next)=>{
         if(!user){
             throw error('User not created!',400);
         }
-        return res.status(201).json({message:'User created succussfuly.'},user)
+        return res.status(201).json({message:'User created successfully.'},user)
     } catch (error) {
         next(error)
     }
 }
 
-const getUsers = async (req,res,next)=>{
+
+const getUsers = async (req, res, next) => {
     try {
-        const users = await findUser()
-        if(!users){
-            throw error('Users not found!',404)
+        let users = await User.find();
+        const profilePromises = users.map((user) => findProfileByProperties('userId', user._id));
+        
+        const profiles = await Promise.all(profilePromises);
+        users = users.map((user, index) => {
+            const profile = profiles[index];
+            return { ...user.toObject(), profile };
+        });
+
+        if (!users || users.length === 0) {
+            throw new Error('Users not found!', 404);
         }
-        return res.status(200).json(users)
+
+        return res.status(200).json(users);
     } catch (error) {
-        next(error)
+        next(error);
     }
-}
+};
+
+// const getAllUsers = async (req,res,next)=>{
+//     let profiles = await Profile.find().populate({path:'userId',select:'username'})
+// }
+
 
 module.exports = {
     getUserById, patchUserById, postUser, getUsers
