@@ -11,8 +11,10 @@ import {
 import { Home, Profile, Tables, Notifications } from "@/pages/dashboard";
 import { SignIn, SignUp } from "@/pages/auth";
 import { BuildingOffice2Icon } from "@heroicons/react/24/outline";
-import Users from "./pages/dashboard/users";
-import Hotels from "./pages/dashboard/hotels";
+import Users from "./pages/dashboard/users/users";
+import Hotels from "./pages/dashboard/hotels/hotels";
+import CreateHotel from "./pages/dashboard/hotels/createHotel";
+import ViewHotel from "./pages/dashboard/hotels/viewHotel";
 
 const icon = {
   className: "w-5 h-5 text-inherit",
@@ -40,6 +42,7 @@ export const routes = [
         path: "/hotels",
         element: <Hotels />,
       },
+
       {
         icon: <UserGroupIcon {...icon} />,
         name: "agents",
@@ -65,6 +68,29 @@ export const routes = [
         element: <Notifications />,
       },
     ],
+  },
+  {
+    layout: 'dashboard',
+    pages:[
+      {
+        icon: <BuildingOffice2Icon {...icon} />,
+        name: "Create",
+        path: "/hotels/add",
+        element: <CreateHotel />,
+      },
+      {
+        icon: <BuildingOffice2Icon {...icon} />,
+        name: "Update",
+        path: "/hotels/update/:id",
+        element: <CreateHotel />,
+      },
+      {
+        icon: <BuildingOffice2Icon {...icon} />,
+        name: "hotel",
+        path: "/hotels/:id",
+        element: <ViewHotel />,
+      },
+    ]
   },
   {
     title: "auth pages",

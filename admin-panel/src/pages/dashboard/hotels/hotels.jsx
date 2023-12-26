@@ -10,6 +10,8 @@ import {
     Button,
   } from "@material-tailwind/react";
 import { useGetHotelsQuery } from "@/features/hotels/hotelsApi";
+import { EyeIcon, PencilSquareIcon, TrashIcon } from "@heroicons/react/24/solid";
+import { NavLink } from "react-router-dom";
   
   export function Hotels() {
 
@@ -23,7 +25,7 @@ import { useGetHotelsQuery } from "@/features/hotels/hotelsApi";
         tableContent = <table className="w-full min-w-[640px] table-auto">
         <thead>
           <tr>
-            {["Hotels", "Address", "Contact Info", "phone", ""].map((el) => (
+            {["Hotels", "Address", "Contact Info", "At service", "Actions"].map((el) => (
               <th
                 key={el}
                 className="border-b border-blue-gray-50 py-3 px-5 text-left"
@@ -75,18 +77,39 @@ import { useGetHotelsQuery } from "@/features/hotels/hotelsApi";
                     </Typography>
                   </td>
                   <td className={className}>
-                    {/* <Typography className="text-xs font-semibold text-blue-gray-600">
-                      {user?.profile?.contactInfo?.phone?user?.profile?.contactInfo?.phone:'N/A'}
-                    </Typography> */}''
-                  </td>
-                  <td className={className}>
-                    <Typography
-                      as="a"
-                      href="#"
-                      className="text-xs font-semibold text-blue-gray-600"
-                    >
-                      Edit
+                    <Typography className="text-xs font-semibold text-blue-gray-600">
+                        {hotel?.availability===true?'YES':'NO'}
                     </Typography>
+                  </td>
+                  <td className={`${className} flex`}>
+                    <NavLink to={`/dashboard/hotels/${hotel?._id}`}>
+                      <Button
+                          
+                          variant="text"
+                          color="red"
+                          className="hidden items-center gap-1 px-4 xl:flex"
+                          >
+                          <EyeIcon className="h-5 w-5 text-blue-500" />
+                      </Button>
+                    </NavLink>
+                    <NavLink to={`/dashboard/hotels/update/${hotel?._id}`}>
+                      <Button
+                         variant="text"
+                         color="red"
+                         className="hidden items-center gap-1 px-4 xl:flex"
+                         >
+                         <PencilSquareIcon className="h-5 w-5 text-orange-500" />
+                     </Button>
+                    </NavLink>
+                     
+                      <Button
+                         
+                          variant="text"
+                          color="red"
+                          className="hidden items-center gap-1 px-4 xl:flex"
+                          >
+                          <TrashIcon className="h-5 w-5 text-red-500" />
+                      </Button>
                   </td>
                 </tr>
               );
@@ -104,9 +127,12 @@ import { useGetHotelsQuery } from "@/features/hotels/hotelsApi";
                 <Typography variant="h6" color="white">
                 Hotels
                 </Typography>
-                <Button  variant="filled"  color="blue-gray" >
-                    Sign In
-                </Button>
+                <NavLink to={'/dashboard/hotels/add'}>
+                  <Button  variant="filled"  color="blue-gray">
+                      + Add New
+                  </Button>
+                </NavLink>
+               
             </div>
 
           </CardHeader>
