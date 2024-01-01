@@ -1,6 +1,7 @@
 const { serverUrl } = require("../config/config");
 const { findHotel, createHotel, findHotelByProperties } = require("../services/hotel");
 const { findProfileByProperties } = require("../services/profile");
+const { getLocationLatLonByCity } = require("../services/weather");
 const error = require("../utils/error")
 
 const getHotelById = async(req,res,next)=>{
@@ -14,7 +15,10 @@ const getHotelById = async(req,res,next)=>{
         if(!hotel){
             throw error('Hotel not found!',404)
         }
+        let weatherInfo = await getLocationLatLonByCity(hotel?.location?.city);
+        console.log(weatherInfo);
         const modifiedHotel = {
+           weather: weatherInfo,
             ...hotel,
             agentDetails: profile,
             images: hotel.images.map((image)=>`${serverUrl}/uploads/${image}`)
