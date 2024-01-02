@@ -7,7 +7,7 @@ const postRoom =async (req,res,next)=>{
     const {roomNumber,roomType,price,availability,overview,features,facilities,floor,smokingPolicy,bedType,occupancy} = req.body
     const {hotelId} = req.params;
     try {
-        const images = req.files;
+        const images = req.fileUrls;
         const room = await createRoom({hotelId,roomNumber,roomType,price,availability,overview,features,facilities,floor,smokingPolicy,bedType,occupancy,images})
         if(!room){
             throw error('Room not created!',400)

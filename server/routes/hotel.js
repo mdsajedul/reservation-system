@@ -14,7 +14,7 @@ router.get('/agent/:agentId', validate(validationSchema.objectIdValidation,'para
 router.get('/:hotelId/rooms', validate(validationSchema.objectIdValidation,'params'), roomController.getRoomsByHotelId)
 
 //create room by hotel id
-router.post('/:hotelId/rooms',authenticate, roleAuthorization(['Agent']),upload.array('images'), validate(validationSchema.objectIdValidation,'params'), validate(validationSchema.createRoom,'body'), roomController.postRoom)
+router.post('/:hotelId/rooms',authenticate, roleAuthorization(['Agent']),upload.uploadMultipleToCloudinary, validate(validationSchema.objectIdValidation,'params'), validate(validationSchema.createRoom,'body'), roomController.postRoom)
 
 //get hotel by hoteId
 router.get('/:hotelId', validate(validationSchema.objectIdValidation,'params'), hotelController.getHotelById)
@@ -23,7 +23,7 @@ router.get('/:hotelId', validate(validationSchema.objectIdValidation,'params'), 
 router.patch('/:hotelId', authenticate, validate(validationSchema.objectIdValidation), roleAuthorization(['Admin','Agent']), hotelController.patchHotelById)
 
 //create new hotel
-router.post('/', authenticate, roleAuthorization(['Admin','Agent']), upload.array('images'), validate(validationSchema.createHotel,'body'), hotelController.postHotel)
+router.post('/', authenticate, roleAuthorization(['Admin','Agent']), upload.uploadMultipleToCloudinary, validate(validationSchema.createHotel,'body'), hotelController.postHotel)
 
 //get all hotels
 router.get('/', hotelController.getAllHotel)

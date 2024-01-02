@@ -3,7 +3,7 @@ const error = require("../utils/error");
 
 const postProfile =async (req,res,next)=>{
     const { firstName, lastName, dateOfBirth, phone, email, country, state, district, upazila, biography, notification, language, socialMediaLink} = req.body;
-    const file = req?.file?.filename;
+    const file = req?.fileUrl
 
     console.log(req.body);
    

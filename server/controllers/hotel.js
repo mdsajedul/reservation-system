@@ -1,7 +1,7 @@
 const { serverUrl } = require("../config/config");
 const { findHotel, createHotel, findHotelByProperties } = require("../services/hotel");
 const { findProfileByProperties } = require("../services/profile");
-const { getLocationLatLonByCity } = require("../services/weather");
+const { getWeatherInfo } = require("../services/weather");
 const error = require("../utils/error")
 
 const getHotelById = async(req,res,next)=>{
@@ -11,14 +11,12 @@ const getHotelById = async(req,res,next)=>{
         const hotel = await findHotelByProperties('_id',hotelId)
         console.log('user id/ agent id',hotel?.agentId)
         let profile = await findProfileByProperties('userId',hotel?.agentId)
-        console.log(profile)
         if(!hotel){
             throw error('Hotel not found!',404)
         }
-        let weatherInfo = await getLocationLatLonByCity(hotel?.location?.city);
-        console.log(weatherInfo);
+        let weatherInfo = await getWeatherInfo(hotel?.location?.city);
         const modifiedHotel = {
-           weather: weatherInfo,
+           weatherInfo: weatherInfo,
             ...hotel,
             agentDetails: profile,
             images: hotel.images.map((image)=>`${serverUrl}/uploads/${image}`)
@@ -53,7 +51,7 @@ const postHotel =async (req,res,next)=>{
     const {agentId, hotelName, city, state, country, address, overview, features, facilities, roomType, phone, email, website, checkInTime, checkOutTime, policies, availability} = req.body
 
     try {
-        const images = req.files;
+        const images = req.fileUrls;
         const hotel = await createHotel({agentId: agentId? agentId : req.user._id, hotelName, city, state, country, address, overview, features, facilities, roomType, phone, email, website, checkInTime, checkOutTime, policies, availability, images })
         if(!hotel){
             throw error('Hotel not created!',400)
